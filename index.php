@@ -1,35 +1,11 @@
 <?php
-class Movie
-{
-  public $title;
-  public $run_time;
-  public $genre;
-  public $cast;
+require_once __DIR__ . '/models/Movie.php';
+require_once __DIR__ . '/models/Actor.php';
 
-  public function __construct(String $title, Int $run_time, $genre = 'Anonimo', $cast = 'Anonimo')
-  {
-    $this->title  = $title;
-    $this->run_time = $run_time;
-    $this->genre = $genre;
-    $this->cast = $cast;
-  }
-
-  public function toUppercaseTitle()
-  {
-    return strtoupper($this->title);
-  }
-
-  public function getRunTime()
-  {
-    return $this->run_time . 'min';
-  }
-}
-
-$first_movie = new Movie('Alla ricerca di Nemo', 90, 'Animazione', 'Andrew Stanton');
-$second_movie = new Movie('Mamma ho perso l\'aereo ', 130, 'Comico', 'Macaulay Culkin');
-
-$movies = [$first_movie, $second_movie];
-
+/**
+ * @var Movie[] Array
+ */
+$movies = require_once __DIR__ . '/data/db.php';
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +26,11 @@ $movies = [$first_movie, $second_movie];
       <li class="card p-3">
         <h2><?= $movie->toUppercaseTitle() ?></h2>
         <p>Durata: <?= $movie->getRunTime() ?></p>
-        <p>Cast: <?= $movie->cast ?></p>
+        <p>Cast:
+          <?php foreach ($movie->cast as $actor) : ?>
+            <span>|<?= $actor->getFullName() ?>|</span>
+          <?php endforeach ?>
+        </p>
         <p>Genre: <?= $movie->genre ?></p>
       </li>
     <?php endforeach ?>
